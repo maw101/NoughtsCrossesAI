@@ -1,4 +1,4 @@
-public class Application {
+class Application {
 
     public static void main(String[] args) {
         Game g = new Game();

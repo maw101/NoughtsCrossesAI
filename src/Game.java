@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Game {
+class Game {
 
     private char[][] grid;
     private int boardSize;
@@ -8,18 +8,21 @@ public class Game {
     private boolean gameWon;
 
     public Game() {
-        boardSize = 3;
-        grid = new char[boardSize][boardSize];
+        this(3);
+    }
+
+    public Game(int boardSize) {
+        this.boardSize = boardSize;
+        grid = getNewGrid();
         moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
         gameWon = false;
     }
 
-    public char[][] getNewGrid() {
+    private char[][] getNewGrid() {
         return new char[boardSize][boardSize];
     }
 
     public void play() {
-        int turnCount = 0;
         char currentPlayer = 'O';
 
         renderGrid();
@@ -37,12 +40,10 @@ public class Game {
                 System.out.println("Draw!");
                 gameWon = true;
             }
-
-            turnCount++;
         } while (!gameWon);
     }
 
-    public void renderGrid() {
+    private void renderGrid() {
         System.out.println("  0 1 2");
         System.out.println("  -----");
         for (int row = 0; row < boardSize; row++) {
@@ -86,7 +87,7 @@ public class Game {
 
     }
 
-    public void makeMove(char player) {
+    private void makeMove(char player) {
         Coordinate move;
         do {
             move = getCoordinateInput();

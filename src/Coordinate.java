@@ -3,7 +3,7 @@ import java.util.Objects;
 /**
  * The type Coordinate.
  */
-public class Coordinate {
+class Coordinate {
 
     private int x;
     private int y;
@@ -12,17 +12,6 @@ public class Coordinate {
      * Instantiates a new Coordinate.
      */
     public Coordinate() {}
-
-    /**
-     * Instantiates a new Coordinate.
-     *
-     * @param x the x coordinate
-     * @param y the y coordinate
-     */
-    public Coordinate(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 
     /**
      * Gets x coordinate.
