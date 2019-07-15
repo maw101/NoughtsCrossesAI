@@ -14,6 +14,22 @@ public class Game {
         return new char[boardSize][boardSize];
     }
 
+    public void play() {
+        int turnCount = 0;
+        char currentPlayer = 'O';
+        while (true) {
+            if (currentPlayer == 'X') {
+                currentPlayer = 'O';
+            } else {
+                currentPlayer = 'X';
+            }
+
+            renderGrid();
+            makeMove(currentPlayer);
+            turnCount++;
+        }
+    }
+
     public void renderGrid() {
         System.out.println("  0 1 2");
         System.out.println("  -----");
@@ -50,8 +66,8 @@ public class Game {
                 (move.getY() < 0 || move.getY() >= boardSize)) {
             System.err.println("Invalid Coordinate - " + move + " - outside the grid");
             return false;
-        } else if ((grid[move.getY()][move.getX()] == 0)) { // if == 0 means empty square
-            System.err.println("Square " + move + " is already occupied ");
+        } else if ((grid[move.getX()][move.getY()] != 0)) { // if == 0 means empty square
+            System.err.println("Square " + move + " is already occupied");
             return false;
         }
         return true;
@@ -64,7 +80,7 @@ public class Game {
             move = getCoordinateInput();
         } while (!isValidMove(move));
 
-        grid[move.getY()][move.getX()] = player;
+        grid[move.getX()][move.getY()] = player;
     }
 
 }
