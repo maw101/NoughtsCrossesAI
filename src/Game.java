@@ -27,21 +27,24 @@ public class Game {
         }
     }
 
-    // todo: coord class?
     // todo: better input method to prevent exceptions etc
-    public int[] getPlayerMove() {
+    public Coordinate getPlayerMove() {
         Scanner in = new Scanner(System.in);
-        int[] position = new int[2];
+        Coordinate position = new Coordinate();
 
         // get X position
         System.out.println("Enter X Coordinate: ");
-        position[0] = in.nextInt();
+        position.setX(in.nextInt());
 
         // get Y position
         System.out.println("Enter Y Coordinate: ");
-        position[1] = in.nextInt();
+        position.setY(in.nextInt());
 
         return position;
+    }
+
+    public void makeMove() {
+
     }
 
 }
