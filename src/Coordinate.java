@@ -14,6 +14,17 @@ class Coordinate {
     public Coordinate() {}
 
     /**
+     * Instantiates a new Coordinate.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
+    public Coordinate(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
      * Gets x coordinate.
      *
      * @return the x coordinate
