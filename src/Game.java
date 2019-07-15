@@ -4,10 +4,14 @@ public class Game {
 
     private char[][] grid;
     private int boardSize;
+    private int[] moveSums;
+    private boolean gameWon;
 
     public Game() {
         boardSize = 3;
         grid = new char[boardSize][boardSize];
+        moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
+        gameWon = false;
     }
 
     public char[][] getNewGrid() {
@@ -17,17 +21,20 @@ public class Game {
     public void play() {
         int turnCount = 0;
         char currentPlayer = 'O';
-        while (true) {
+
+        renderGrid();
+        do {
             if (currentPlayer == 'X') {
                 currentPlayer = 'O';
             } else {
                 currentPlayer = 'X';
             }
 
-            renderGrid();
             makeMove(currentPlayer);
+            renderGrid();
+
             turnCount++;
-        }
+        } while (!gameWon);
     }
 
     public void renderGrid() {
@@ -81,6 +88,34 @@ public class Game {
         } while (!isValidMove(move));
 
         grid[move.getX()][move.getY()] = player;
+        checkIfMoveWonGame(move, player);
+    }
+
+    private void checkIfMoveWonGame(Coordinate move, char player) {
+        int amountToAdd;
+        if (player == 'X')
+            amountToAdd = 1;
+        else
+            amountToAdd = -1;
+
+        // add to row sum
+        moveSums[move.getY()] += amountToAdd;
+        // add to column sum
+        moveSums[boardSize + move.getX()] += amountToAdd;
+
+        // if on leading diagonal, add to this sum
+        if (move.getX() == move.getY())
+            moveSums[2 * boardSize] += amountToAdd;
+        // if on anti diagonal, add to this sum
+        if ((move.getX() + move.getY()) == boardSize)
+            moveSums[(2 * boardSize) + 1] += amountToAdd;
+
+        // check these positions
+        if  (moveSums[move.getY()] == boardSize || moveSums[boardSize + move.getX()] == boardSize ||
+                moveSums[2 * boardSize] == boardSize || moveSums[(2 * boardSize) + 1] == boardSize) {
+            System.out.println("Game Won! Player " + player + " has won the game with " + boardSize + " in a row.");
+            gameWon = true;
+        }
     }
 
 }
