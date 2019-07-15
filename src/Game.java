@@ -33,6 +33,11 @@ public class Game {
             makeMove(currentPlayer);
             renderGrid();
 
+            if (isGridFull()) {
+                System.out.println("Draw!");
+                gameWon = true;
+            }
+
             turnCount++;
         } while (!gameWon);
     }
@@ -92,7 +97,6 @@ public class Game {
     }
 
     private void checkIfMoveWonGame(Coordinate move, char player) {
-        int absoluteBoardSize = Math.abs(boardSize);
         int amountToAdd;
         if (player == 'X')
             amountToAdd = 1;
@@ -108,15 +112,23 @@ public class Game {
         if (move.getX() == move.getY())
             moveSums[2 * boardSize] += amountToAdd;
         // if on anti diagonal, add to this sum
-        if ((move.getX() + move.getY()) == boardSize)
+        if ((move.getX() + move.getY() + 1) == boardSize)
             moveSums[(2 * boardSize) + 1] += amountToAdd;
 
         // check these positions
-        if  (moveSums[move.getY()] == absoluteBoardSize || moveSums[boardSize + move.getX()] == absoluteBoardSize ||
-                moveSums[2 * boardSize] == absoluteBoardSize || moveSums[(2 * boardSize) + 1] == absoluteBoardSize) {
+        if  (Math.abs(moveSums[move.getY()]) == boardSize || Math.abs(moveSums[boardSize + move.getX()]) == boardSize ||
+                Math.abs(moveSums[2 * boardSize]) == boardSize || Math.abs(moveSums[(2 * boardSize) + 1]) == boardSize) {
             System.out.println("Game Won! Player " + player + " has won the game with " + boardSize + " in a row.");
             gameWon = true;
         }
+    }
+
+    private boolean isGridFull() {
+        for (int row = 0; row < boardSize; row++)
+            for (int col = 0; col < boardSize; col++)
+                if (grid[col][row] == 0) // if == 0 means empty square
+                    return false;
+        return true;
     }
 
 }
