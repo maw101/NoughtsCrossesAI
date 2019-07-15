@@ -92,6 +92,7 @@ public class Game {
     }
 
     private void checkIfMoveWonGame(Coordinate move, char player) {
+        int absoluteBoardSize = Math.abs(boardSize);
         int amountToAdd;
         if (player == 'X')
             amountToAdd = 1;
@@ -111,8 +112,8 @@ public class Game {
             moveSums[(2 * boardSize) + 1] += amountToAdd;
 
         // check these positions
-        if  (moveSums[move.getY()] == boardSize || moveSums[boardSize + move.getX()] == boardSize ||
-                moveSums[2 * boardSize] == boardSize || moveSums[(2 * boardSize) + 1] == boardSize) {
+        if  (moveSums[move.getY()] == absoluteBoardSize || moveSums[boardSize + move.getX()] == absoluteBoardSize ||
+                moveSums[2 * boardSize] == absoluteBoardSize || moveSums[(2 * boardSize) + 1] == absoluteBoardSize) {
             System.out.println("Game Won! Player " + player + " has won the game with " + boardSize + " in a row.");
             gameWon = true;
         }
