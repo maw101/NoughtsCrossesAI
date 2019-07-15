@@ -6,6 +6,7 @@ class Game {
     private int boardSize;
     private int[] moveSums;
     private boolean gameWon;
+    private RandomAI ai;
 
     public Game() {
         this(3);
@@ -16,6 +17,7 @@ class Game {
         grid = getNewGrid();
         moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
         gameWon = false;
+        ai = new RandomAI();
     }
 
     private char[][] getNewGrid() {
@@ -36,7 +38,7 @@ class Game {
             makeMove(currentPlayer);
             renderGrid();
 
-            if (isGridFull()) {
+            if (isGridFull() && !gameWon) {
                 System.out.println("Draw!");
                 gameWon = true;
             }
@@ -84,13 +86,12 @@ class Game {
             return false;
         }
         return true;
-
     }
 
     private void makeMove(char player) {
         Coordinate move;
         do {
-            move = getCoordinateInput();
+            move = ai.makeMove(grid, player); // todo: add back after: getCoordinateInput();
         } while (!isValidMove(move));
 
         grid[move.getX()][move.getY()] = player;
