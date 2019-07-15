@@ -41,11 +41,11 @@ public class WinningMoveAI implements AI {
                     for (int row = 0; row < boardSize; row++)
                         if (grid[(moveNum - boardSize)][row] == 0) // ie if is blank
                             position = new Coordinate((moveNum - boardSize), row); // place in blank square
-                } else if (moveNum == boardSize) { // is the leading diagonal
+                } else if (moveNum == (boardSize * 2)) { // is the leading diagonal
                     for (int i = 0; i < boardSize; i++)
                         if (grid[i][i] == 0) // ie if is blank
                             position = new Coordinate(i, i); // place in blank square
-                } else if (moveNum == (boardSize + 1)) { // is the anti diagonal
+                } else if (moveNum == ((boardSize * 2) + 1)) { // is the anti diagonal
                     for (int row = 0, column = (boardSize - 1); row < boardSize; row++, column--)
                         if (grid[column][row] == 0) // ie if is blank
                             position = new Coordinate(column, row); // place in blank square

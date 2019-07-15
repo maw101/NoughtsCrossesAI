@@ -6,7 +6,7 @@ class Game {
     private int boardSize;
     private int[] moveSums;
     private boolean gameWon;
-    private WinningMoveAI ai;
+    private FindWinningBlockLosingAI ai;
 
     public Game() {
         this(3);
@@ -17,7 +17,7 @@ class Game {
         grid = getNewGrid();
         moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
         gameWon = false;
-        ai = new WinningMoveAI();
+        ai = new FindWinningBlockLosingAI();
     }
 
     private char[][] getNewGrid() {
