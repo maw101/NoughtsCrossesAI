@@ -8,6 +8,9 @@ public class Coordinate {
     private int x;
     private int y;
 
+    /**
+     * Instantiates a new Coordinate.
+     */
     public Coordinate() {}
 
     /**
@@ -39,10 +42,20 @@ public class Coordinate {
         return y;
     }
 
+    /**
+     * Sets x coordinate.
+     *
+     * @param x the x coordinate
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * Sets y coordinate.
+     *
+     * @param y the y coordinate
+     */
     public void setY(int y) {
         this.y = y;
     }
