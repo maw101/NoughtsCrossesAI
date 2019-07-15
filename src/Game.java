@@ -6,7 +6,7 @@ class Game {
     private int boardSize;
     private int[] moveSums;
     private boolean gameWon;
-    private RandomAI ai;
+    private WinningMoveAI ai;
 
     public Game() {
         this(3);
@@ -17,7 +17,7 @@ class Game {
         grid = getNewGrid();
         moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
         gameWon = false;
-        ai = new RandomAI();
+        ai = new WinningMoveAI();
     }
 
     private char[][] getNewGrid() {
@@ -38,7 +38,9 @@ class Game {
             makeMove(currentPlayer);
             renderGrid();
 
-            if (isGridFull() && !gameWon) {
+            if (gameWon) {
+                System.out.println("GAME OVER!");
+            } else if (isGridFull()) {
                 System.out.println("Draw!");
                 gameWon = true;
             }
@@ -58,6 +60,7 @@ class Game {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     // todo: better input method to prevent exceptions etc
@@ -91,7 +94,7 @@ class Game {
     private void makeMove(char player) {
         Coordinate move;
         do {
-            move = ai.makeMove(grid, player); // todo: add back after: getCoordinateInput();
+            move = ai.makeMove(grid, moveSums, player); // todo: add back after: getCoordinateInput();
         } while (!isValidMove(move));
 
         grid[move.getX()][move.getY()] = player;
@@ -120,7 +123,7 @@ class Game {
         // check these positions
         if  (Math.abs(moveSums[move.getY()]) == boardSize || Math.abs(moveSums[boardSize + move.getX()]) == boardSize ||
                 Math.abs(moveSums[2 * boardSize]) == boardSize || Math.abs(moveSums[(2 * boardSize) + 1]) == boardSize) {
-            System.out.println("Game Won! Player " + player + " has won the game with " + boardSize + " in a row.");
+            System.out.println("Game Won! Player " + player + " has won the game with " + boardSize + " in a row.\n");
             gameWon = true;
         }
     }
