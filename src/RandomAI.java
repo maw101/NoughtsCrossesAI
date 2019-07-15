@@ -1,7 +1,18 @@
+/**
+ * The type Random AI.
+ *
+ * Randomly chooses a valid move on the grid.
+ */
 public class RandomAI implements AI {
 
+    /**
+     * Generates a random valid move on the grid.
+     * @param grid the grid
+     * @param player the current player's symbol
+     * @return position the coordinates of the move
+     */
     @Override
-    public Coordinate makeMove(char[][] grid, char player) {
+    public Coordinate makeMove(char[][] grid, int[] moveSums, char player) {
         Coordinate position = new Coordinate();
 
         do {
