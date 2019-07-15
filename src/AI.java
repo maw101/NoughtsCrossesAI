@@ -4,6 +4,6 @@ public interface AI {
 
     Random rand = new Random();
 
-    Coordinate makeMove(char[][] grid, char player);
+    Coordinate makeMove(char[][] grid, int[] moveSums, char player);
 
 }
