@@ -22,7 +22,7 @@ class Game {
         return new char[boardSize][boardSize];
     }
 
-    public void play(String playerOneAlgorithmName, String playerTwoAlgorithmName) {
+    public void play(String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
         Coordinate move;
         Player currentPlayer;
         // define each player
@@ -88,7 +88,7 @@ class Game {
             return 'O';
         else if (requestingPlayersSymbol == 'O')
             return 'X';
-        throw new Exception("Unknown Player Symbol: " + requestingPlayersSymbol);
+        throw new Exception("Unknown Player Symbol: '" + requestingPlayersSymbol + "'");
     }
 
     public char getWinner() {
@@ -151,13 +151,13 @@ class Game {
                 movingPlayer = new OptimisedAI();
                 break;
             default:
-                throw new Exception("Unknown Algorithm: " + currentPlayer.getAlgorithmName());
+                throw new Exception("Unknown Algorithm: '" + currentPlayer.getAlgorithmName() + "'");
         }
         // make the move with the correct algorithm and return the chosen coordinate
         return movingPlayer.getMove(grid, moveSums, currentPlayer.getSymbol());
     }
 
-    private Coordinate makeMove(Player currentPlayer) {
+    private Coordinate makeMove(Player currentPlayer) throws Exception {
         Coordinate move;
 
         // get move coordinates from current player, do this until a legal move is chosen
