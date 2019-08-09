@@ -37,9 +37,17 @@ class Game {
 
         grid = getNewGrid(); // setup a new blank grid
 
+        // output player information
+        for (Player player : players)
+            System.out.println(player);
+        System.out.println("############################################################");
+
         do {
             // set current player
             currentPlayer = players[turnCount % 2];
+
+            // print current players symbol
+            System.out.println("\n" + currentPlayer.getSymbol() + " - it is your go. The current board state is shown below:\n");
 
             // render grid for the move
             renderGrid();
@@ -53,7 +61,7 @@ class Game {
             if (gameWon) {
                 renderGrid();
                 // print details of player who won
-                System.out.println("Game Won! Player " + currentPlayer.getSymbol() +
+                System.out.println("GAME WON! Player " + currentPlayer.getSymbol() +
                         " has won the game with " + boardSize + " in a row.\n");
             } else if (isGridFull()) {
                 renderGrid();
