@@ -132,7 +132,7 @@ class Game {
     }
 
     private Coordinate getMove(Player currentPlayer) throws Exception {
-        MovingPlayer movingPlayer = null;
+        MovingPlayer movingPlayer;
         // setup correct algorithm ready to then make move
         switch (currentPlayer.getAlgorithmName()) {
             case "Human":
@@ -148,7 +148,7 @@ class Game {
                 movingPlayer = new FindWinningBlockLosingAI();
                 break;
             case "OptimisedAI":
-                // todo: once minimax algorithm made add instantiation here
+                movingPlayer = new OptimisedAI();
                 break;
             default:
                 throw new Exception("Unknown Algorithm: " + currentPlayer.getAlgorithmName());
