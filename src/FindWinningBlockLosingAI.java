@@ -1,7 +1,7 @@
-public class FindWinningBlockLosingAI implements AI {
+public class FindWinningBlockLosingAI implements MovingPlayer {
 
     @Override
-    public Coordinate makeMove(char[][] grid, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
         Coordinate position = null;
 
         // get winning move for the AI player
@@ -15,10 +15,9 @@ public class FindWinningBlockLosingAI implements AI {
                 position = getWinningMoveForGivenPlayer(grid, moveSums, 'X');
         }
 
-        // worst case place random move
-        if (position == null) { // unable to find a winning move so choose a position randomly
+        // worst case, place random move
+        if (position == null) // unable to find a winning move so choose a position randomly
             position = getRandomMove(grid);
-        }
 
         return position;
     }
@@ -62,10 +61,12 @@ public class FindWinningBlockLosingAI implements AI {
 
     private Coordinate getRandomMove(char[][] grid) {
         Coordinate position = new Coordinate();
+
         do {
             position.setX(rand.nextInt(grid.length));
             position.setY(rand.nextInt(grid.length));
         } while (grid[position.getX()][position.getY()] != 0); // if != 0 means occupied square
+
         return position;
     }
 

@@ -4,10 +4,10 @@
  * Chooses a winning move if one exists, otherwise randomly
  * chooses a valid move on the grid.
  */
-public class WinningMoveAI implements AI {
+public class WinningMoveAI implements MovingPlayer {
 
     @Override
-    public Coordinate makeMove(char[][] grid, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
         Coordinate position = null;
 
         position = getWinningMoveForGivenPlayer(grid, moveSums, player);

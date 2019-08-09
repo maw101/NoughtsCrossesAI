@@ -3,7 +3,7 @@
  *
  * Randomly chooses a valid move on the grid.
  */
-public class RandomAI implements AI {
+public class RandomAI implements MovingPlayer {
 
     /**
      * Generates a random valid move on the grid.
@@ -12,7 +12,7 @@ public class RandomAI implements AI {
      * @return position the coordinates of the move
      */
     @Override
-    public Coordinate makeMove(char[][] grid, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
         Coordinate position = new Coordinate();
 
         do {
