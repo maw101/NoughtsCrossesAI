@@ -102,6 +102,14 @@ class Game {
         return Character.MIN_VALUE; // no winner as yet - return null char literal
     }
 
+    public boolean isGridFull() {
+        for (int row = 0; row < boardSize; row++)
+            for (int col = 0; col < boardSize; col++)
+                if (grid[col][row] == 0) // if == 0 means empty square
+                    return false;
+        return true;
+    }
+
     private void renderGrid() {
         System.out.println("  0 1 2");
         System.out.println("  -----");
@@ -201,14 +209,6 @@ class Game {
         //  the board size)
         return (Math.abs(moveSums[move.getY()]) == boardSize || Math.abs(moveSums[boardSize + move.getX()]) == boardSize ||
                 Math.abs(moveSums[2 * boardSize]) == boardSize || Math.abs(moveSums[(2 * boardSize) + 1]) == boardSize);
-    }
-
-    private boolean isGridFull() {
-        for (int row = 0; row < boardSize; row++)
-            for (int col = 0; col < boardSize; col++)
-                if (grid[col][row] == 0) // if == 0 means empty square
-                    return false;
-        return true;
     }
 
 }
