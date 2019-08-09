@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 class Game {
 
     private char[][] grid;
     private final int boardSize;
-    private final int[] moveSums;
+    private int[] moveSums;
     private boolean gameWon;
 
     public Game() {
@@ -14,8 +15,6 @@ class Game {
 
     public Game(int boardSize) {
         this.boardSize = boardSize;
-        moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
-        gameWon = false;
     }
 
     private char[][] getNewGrid() {
@@ -32,6 +31,8 @@ class Game {
         };
         // define and initialise a turn counter, will allow us to determine the player to move
         int turnCount = 0;
+        moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
+        gameWon = false;
 
         grid = getNewGrid(); // setup a new blank grid
 
@@ -71,6 +72,70 @@ class Game {
             turnCount++;
         } while (!gameWon);
     }
+
+    // ######## BATTLING AI METHODS ########
+
+    public void runBattles(int numberOfBattles, String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
+        int pOneWinCount = 0;
+        int pTwoWinCount = 0;
+        int drawCount = 0;
+        for (int i = 0; i < numberOfBattles; i++) {
+            switch (runSingleBattle(playerOneAlgorithmName, playerTwoAlgorithmName)) {
+                case 0: // x won
+                    pOneWinCount++;
+                    break;
+                case 1: // o won
+                    pTwoWinCount++;
+                    break;
+                case -1:
+                    drawCount++;
+                    break;
+            }
+        }
+        System.out.println(numberOfBattles + " Battles");
+        System.out.println("Player One (" + playerOneAlgorithmName + ") Wins: " + pOneWinCount + " (~" + (int) (((double) pOneWinCount / numberOfBattles) * 100) + "%)");
+        System.out.println("Player Two (" + playerTwoAlgorithmName + ") Wins: " + pTwoWinCount + " (~" + (int) (((double) pTwoWinCount / numberOfBattles) * 100) + "%)");
+        System.out.println("Draw Count: " + drawCount + " (~" + (int) (((double) drawCount / numberOfBattles) * 100) + "%)");
+    }
+
+    private int runSingleBattle(String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
+        Random rand = new Random();
+        Coordinate move;
+        Player currentPlayer;
+        // define each player
+        Player[] players = {
+                new Player('X', playerOneAlgorithmName),
+                new Player('O', playerTwoAlgorithmName)
+        };
+        // define and initialise a turn counter, will allow us to determine the player to move
+        int turnCount = rand.nextInt(2);
+        moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
+        gameWon = false;
+
+        grid = getNewGrid(); // setup a new blank grid
+
+        do {
+            // set current player
+            currentPlayer = players[turnCount % 2];
+
+            // make the move
+            move = makeMove(currentPlayer);
+
+            // check if the previous move won the game
+            gameWon = checkIfMoveWonGame(move, currentPlayer.getSymbol());
+
+            if (gameWon) {
+                return turnCount % 2; // X=0, O=1
+            } else if (isGridFull()) {
+                return -1; // draw=-1
+            }
+
+            // increment the turn counter
+            turnCount++;
+        } while (true);
+    }
+
+    // ######## /END BATTLING AI METHODS ########
 
     public Coordinate[] getAllValidMoveCoordinates() {
         List<Coordinate> validMoves = new ArrayList<>();
