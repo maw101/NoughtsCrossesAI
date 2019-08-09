@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public interface MovingPlayer {
+interface MovingPlayer {
 
     Random rand = new Random();
 

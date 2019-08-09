@@ -1,9 +1,9 @@
 import java.util.Objects;
 
-public class Player {
+class Player {
 
-    private char symbol;
-    private String algorithmName;
+    private final char symbol;
+    private final String algorithmName;
 
     public Player(char symbol, String algorithmName) {
         this.symbol = symbol;
