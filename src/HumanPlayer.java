@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class HumanPlayer implements MovingPlayer {
 
     @Override
-    public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, char player) {
         // no checks required to see if it is valid as this is checked in Game class' makeMove method
         return getCoordinateInput();
     }

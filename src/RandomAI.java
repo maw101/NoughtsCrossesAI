@@ -12,12 +12,12 @@ public class RandomAI implements MovingPlayer {
      * @return position the coordinates of the move
      */
     @Override
-    public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, char player) {
         Coordinate position = new Coordinate();
 
         do {
-            position.setX(rand.nextInt(grid.length));
-            position.setY(rand.nextInt(grid.length));
+            position.setX(rand.nextInt(gridSize));
+            position.setY(rand.nextInt(gridSize));
         } while (grid[position.getX()][position.getY()] != 0); // if != 0 means occupied square
 
         return position;

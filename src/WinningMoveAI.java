@@ -7,20 +7,19 @@
 public class WinningMoveAI implements MovingPlayer {
 
     @Override
-    public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, char player) {
         Coordinate position;
 
-        position = getWinningMoveForGivenPlayer(grid, moveSums, player);
+        position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, player);
 
         if (position == null) // unable to find a winning move so choose a position randomly
-            position = getRandomMove(grid);
+            position = getRandomMove(grid, gridSize);
 
         return position;
     }
 
-    private Coordinate getWinningMoveForGivenPlayer(char[][] grid, int[] moveSums, char player) {
+    private Coordinate getWinningMoveForGivenPlayer(char[][] grid, int gridSize, int[] moveSums, char player) {
         Coordinate position = null;
-        int boardSize = grid.length;
         int countLookingFor = grid.length - 1; // looking for a count where we are 1 off n in a row
 
         if (player == 'O')
@@ -33,20 +32,20 @@ public class WinningMoveAI implements MovingPlayer {
         //  'X' gives a positive value in moveSums and 'O' gives a negative value in it.
         for (int moveNum = 0; moveNum < moveSums.length; moveNum++)
             if (moveSums[moveNum] == countLookingFor) { // found a line where we are one off winning
-                if (moveNum < boardSize) { // is row
-                    for (int column = 0; column < boardSize; column++)
+                if (moveNum < gridSize) { // is row
+                    for (int column = 0; column < gridSize; column++)
                         if (grid[column][moveNum] == 0) // ie if is blank
                             position = new Coordinate(column, moveNum); // place in blank square
-                } else if (moveNum < boardSize * 2) { // is a column
-                    for (int row = 0; row < boardSize; row++)
-                        if (grid[(moveNum - boardSize)][row] == 0) // ie if is blank
-                            position = new Coordinate((moveNum - boardSize), row); // place in blank square
-                } else if (moveNum == (boardSize * 2)) { // is the leading diagonal
-                    for (int i = 0; i < boardSize; i++)
+                } else if (moveNum < gridSize * 2) { // is a column
+                    for (int row = 0; row < gridSize; row++)
+                        if (grid[(moveNum - gridSize)][row] == 0) // ie if is blank
+                            position = new Coordinate((moveNum - gridSize), row); // place in blank square
+                } else if (moveNum == (gridSize * 2)) { // is the leading diagonal
+                    for (int i = 0; i < gridSize; i++)
                         if (grid[i][i] == 0) // ie if is blank
                             position = new Coordinate(i, i); // place in blank square
-                } else if (moveNum == ((boardSize * 2) + 1)) { // is the anti diagonal
-                    for (int row = 0, column = (boardSize - 1); row < boardSize; row++, column--)
+                } else if (moveNum == ((gridSize * 2) + 1)) { // is the anti diagonal
+                    for (int row = 0, column = (gridSize - 1); row < gridSize; row++, column--)
                         if (grid[column][row] == 0) // ie if is blank
                             position = new Coordinate(column, row); // place in blank square
                 }
@@ -55,11 +54,11 @@ public class WinningMoveAI implements MovingPlayer {
         return position;
     }
 
-    private Coordinate getRandomMove(char[][] grid) {
+    private Coordinate getRandomMove(char[][] grid, int gridSize) {
         Coordinate position = new Coordinate();
         do {
-            position.setX(rand.nextInt(grid.length));
-            position.setY(rand.nextInt(grid.length));
+            position.setX(rand.nextInt(gridSize));
+            position.setY(rand.nextInt(gridSize));
         } while (grid[position.getX()][position.getY()] != 0); // if != 0 means occupied square
         return position;
     }
