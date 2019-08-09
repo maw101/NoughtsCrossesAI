@@ -119,6 +119,10 @@ class Game {
     }
 
     private boolean isLegalMove(Coordinate move) {
+        // check if move is null
+        if (move == null) // means a class implementing the 'MovingPlayer' interface has been incorrectly implemented
+            throw new NullPointerException("Move is null - the current players algorithm has been incorrectly " +
+                    "implemented as it has failed to return a move");
         // check if move is inside the grid
         if ((move.getX() < 0 || move.getX() >= boardSize) ||
                 (move.getY() < 0 || move.getY() >= boardSize)) {
