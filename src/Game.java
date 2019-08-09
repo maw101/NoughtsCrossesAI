@@ -35,7 +35,7 @@ class Game {
 
         grid = getNewGrid(); // setup a new blank grid
 
-        // output player information
+        // output player information - symbol and algorithm name for each player
         for (Player player : players)
             System.out.println(player);
         System.out.println("############################################################");
