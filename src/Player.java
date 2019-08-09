@@ -14,16 +14,8 @@ public class Player {
         return symbol;
     }
 
-    public void setSymbol(char symbol) {
-        this.symbol = symbol;
-    }
-
     public String getAlgorithmName() {
         return algorithmName;
-    }
-
-    public void setAlgorithmName(String algorithmName) {
-        this.algorithmName = algorithmName;
     }
 
     @Override

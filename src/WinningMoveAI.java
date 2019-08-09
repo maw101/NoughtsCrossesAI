@@ -8,7 +8,7 @@ public class WinningMoveAI implements MovingPlayer {
 
     @Override
     public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
-        Coordinate position = null;
+        Coordinate position;
 
         position = getWinningMoveForGivenPlayer(grid, moveSums, player);
 

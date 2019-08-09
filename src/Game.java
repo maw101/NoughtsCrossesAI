@@ -4,10 +4,9 @@ import java.util.List;
 class Game {
 
     private char[][] grid;
-    private int boardSize;
-    private int[] moveSums;
+    private final int boardSize;
+    private final int[] moveSums;
     private boolean gameWon;
-    private FindWinningBlockLosingAI ai;
 
     public Game() {
         this(3);
@@ -17,7 +16,6 @@ class Game {
         this.boardSize = boardSize;
         moveSums = new int[(boardSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
         gameWon = false;
-        ai = new FindWinningBlockLosingAI();
     }
 
     private char[][] getNewGrid() {
@@ -133,7 +131,7 @@ class Game {
         return true;
     }
 
-    private Coordinate getMove(Player currentPlayer) {
+    private Coordinate getMove(Player currentPlayer) throws Exception {
         MovingPlayer movingPlayer = null;
         // setup correct algorithm ready to then make move
         switch (currentPlayer.getAlgorithmName()) {
@@ -153,7 +151,7 @@ class Game {
                 // todo: once minimax algorithm made add instantiation here
                 break;
             default:
-                new Exception("Unknown Algorithm: " + currentPlayer.getAlgorithmName());
+                throw new Exception("Unknown Algorithm: " + currentPlayer.getAlgorithmName());
         }
         // make the move with the correct algorithm and return the chosen coordinate
         return movingPlayer.getMove(grid, moveSums, currentPlayer.getSymbol());

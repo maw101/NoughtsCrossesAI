@@ -2,7 +2,7 @@ public class FindWinningBlockLosingAI implements MovingPlayer {
 
     @Override
     public Coordinate getMove(char[][] grid, int[] moveSums, char player) {
-        Coordinate position = null;
+        Coordinate position;
 
         // get winning move for the AI player
         position = getWinningMoveForGivenPlayer(grid, moveSums, player);
