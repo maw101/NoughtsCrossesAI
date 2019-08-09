@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 class Game {
 
@@ -113,30 +112,13 @@ class Game {
         System.out.println();
     }
 
-    // todo: move to HumanPlayerClass
-    // todo: better input method to prevent exceptions etc
-    private Coordinate getCoordinateInput() {
-        Scanner in = new Scanner(System.in);
-        Coordinate position = new Coordinate();
-
-        // get X position
-        System.out.println("Enter X Coordinate: ");
-        position.setX(in.nextInt());
-
-        // get Y position
-        System.out.println("Enter Y Coordinate: ");
-        position.setY(in.nextInt());
-
-        return position;
-    }
-
     private boolean isLegalMove(Coordinate move) {
         // check if move is inside the grid
         if ((move.getX() < 0 || move.getX() >= boardSize) ||
                 (move.getY() < 0 || move.getY() >= boardSize)) {
             System.err.println("Invalid Coordinate - " + move + " - outside the grid");
             return false;
-        } else if ((grid[move.getX()][move.getY()] != 0)) { // check if position occupied (if == 0 means empty position)
+        } else if (grid[move.getX()][move.getY()] != 0) { // check if position occupied (if == 0 means empty position)
             System.err.println("Square " + move + " is already occupied");
             return false;
         }
@@ -148,7 +130,7 @@ class Game {
         // setup correct algorithm ready to then make move
         switch (currentPlayer.getAlgorithmName()) {
             case "Human":
-                // todo: once human class made add instantiation here
+                movingPlayer = new HumanPlayer();
                 break;
             case "RandomAI":
                 movingPlayer = new RandomAI();
