@@ -4,6 +4,6 @@ interface MovingPlayer {
 
     Random rand = new Random();
 
-    Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, char playerSymbol);
+    Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws Exception;
 
 }

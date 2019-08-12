@@ -7,12 +7,20 @@ class Game {
     public Game() {}
 
     public void play(String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
+        // setup grid
         final int gridSize = 3;
         char[][] grid = getNewGrid(gridSize); // setup a new blank grid
+
+        // setup moveSums which allows us to determine a winner efficiently
         int[] moveSums = new int[(gridSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
+
+        // set gameWon boolean
         boolean gameWon = false;
+
+        // define variables for a move
         Coordinate move;
         Player currentPlayer;
+        int currentPlayerIndex;
 
         // define each player
         Player[] players = {
@@ -30,7 +38,8 @@ class Game {
 
         do {
             // set current player
-            currentPlayer = players[turnCount % 2];
+            currentPlayerIndex = turnCount % 2;
+            currentPlayer = players[currentPlayerIndex];
 
             // print current players symbol
             System.out.println("\n" + currentPlayer.getSymbol() + " - it is your go. The current board state is shown below:\n");
@@ -39,10 +48,13 @@ class Game {
             renderGrid(grid, gridSize);
 
             // make the move
-            move = makeMove(currentPlayer, grid, gridSize, moveSums);
+            move = makeMove(players, currentPlayerIndex, grid, gridSize, moveSums);
+
+            // add to move sums
+            addMoveToMoveSums(move, currentPlayer.getSymbol(), gridSize, moveSums);
 
             // check if the previous move won the game
-            gameWon = checkIfMoveWonGame(move, currentPlayer.getSymbol(), gridSize, moveSums);
+            gameWon = checkIfMoveWonGame(move, gridSize, moveSums);
 
             if (gameWon) {
                 renderGrid(grid, gridSize);
@@ -60,7 +72,7 @@ class Game {
         } while (!gameWon);
     }
 
-    private char[][] getNewGrid(int boardSize) {
+    private static char[][] getNewGrid(int boardSize) {
         return new char[boardSize][boardSize];
     }
 
@@ -91,12 +103,20 @@ class Game {
 
     private int runSingleBattle(String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
         Random rand = new Random();
+        // setup grid
         final int gridSize = 3;
         char[][] grid = getNewGrid(gridSize); // setup a new blank grid
+
+        // setup moveSums which allows us to determine a winner efficiently
         int[] moveSums = new int[(gridSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
+
+        // set gameWon boolean
         boolean gameWon = false;
+
+        // define variables for a move
         Coordinate move;
         Player currentPlayer;
+        int currentPlayerIndex;
 
         // define each player
         Player[] players = {
@@ -109,13 +129,17 @@ class Game {
 
         do {
             // set current player
-            currentPlayer = players[turnCount % 2];
+            currentPlayerIndex = turnCount % 2;
+            currentPlayer = players[currentPlayerIndex];
 
             // make the move
-            move = makeMove(currentPlayer, grid, gridSize, moveSums);
+            move = makeMove(players, currentPlayerIndex, grid, gridSize, moveSums);
+
+            // add to move sums
+            addMoveToMoveSums(move, currentPlayer.getSymbol(), gridSize, moveSums);
 
             // check if the previous move won the game
-            gameWon = checkIfMoveWonGame(move, currentPlayer.getSymbol(), gridSize, moveSums);
+            gameWon = checkIfMoveWonGame(move, gridSize, moveSums);
 
             if (gameWon) {
                 return turnCount % 2; // X=0, O=1
@@ -130,26 +154,18 @@ class Game {
 
     // ######## /END BATTLING AI METHODS ########
 
-    public Coordinate[] getAllValidMoveCoordinates(char[][] grid, int gridSize) {
+    static Coordinate[] getAllValidMoveCoordinates(char[][] grid, int gridSize) {
         List<Coordinate> validMoves = new ArrayList<>();
         for (int row = 0; row < gridSize; row++) {
             for (int col = 0; col < gridSize; col++) {
-                if (grid[col][row] == 0) // check if position empty
+                if (grid[col][row] == '\0') // check if position empty
                     validMoves.add(new Coordinate(col, row));
             }
         }
         return validMoves.toArray(new Coordinate[validMoves.size()]); // convert ArrayList to an Array of Coordinates
     }
 
-    public char getOpponentsSymbol(char requestingPlayersSymbol) throws Exception {
-        if (requestingPlayersSymbol == 'X')
-            return 'O';
-        else if (requestingPlayersSymbol == 'O')
-            return 'X';
-        throw new Exception("Unknown Player Symbol: '" + requestingPlayersSymbol + "'");
-    }
-
-    public char getWinner(int[] moveSums, int gridSize) {
+    static char getWinner(int[] moveSums, char[][] grid, int gridSize) {
         // loop through the moveSums array which allows us to determine lines that have won
         for (int lineSum : moveSums) {
             if (lineSum == gridSize) // if lines sum is equal to the board size, x has won
@@ -157,24 +173,26 @@ class Game {
             else if (lineSum == -gridSize) // otherwise if the lines sum is equal to -(board size), o has won
                 return 'O';
         }
+        if (isGridFull(grid, gridSize))
+            return Character.MAX_VALUE; // game drawn
         return Character.MIN_VALUE; // no winner as yet - return null char literal
     }
 
-    public boolean isGridFull(char[][] grid, int gridSize) {
+    static boolean isGridFull(char[][] grid, int gridSize) {
         for (int row = 0; row < gridSize; row++)
             for (int col = 0; col < gridSize; col++)
-                if (grid[col][row] == 0) // if == 0 means empty square
+                if (grid[col][row] == '\0') // if == 0 means empty square
                     return false;
         return true;
     }
 
-    private void renderGrid(char[][] grid, int gridSize) {
+     static void renderGrid(char[][] grid, int gridSize) { // todo: make private again
         System.out.println("  0 1 2");
         System.out.println("  -----");
         for (int row = 0; row < gridSize; row++) {
             System.out.print(row + "|");
             for (int col = 0; col < gridSize; col++) {
-                if (grid[col][row] == 0)
+                if (grid[col][row] == '\0')
                     System.out.print("  ");
                 else
                     System.out.print(grid[col][row] + " ");
@@ -184,7 +202,7 @@ class Game {
         System.out.println();
     }
 
-    private boolean isLegalMove(Coordinate move, char[][] grid, int gridSize) {
+    static boolean isLegalMove(Coordinate move, char[][] grid, int gridSize) {
         // check if move is null
         if (move == null) // means a class implementing the 'MovingPlayer' interface has been incorrectly implemented
             throw new NullPointerException("Move is null - the current players algorithm has been incorrectly " +
@@ -201,7 +219,8 @@ class Game {
         return true;
     }
 
-    private Coordinate getMove(Player currentPlayer, char[][] grid, int[] moveSums) throws Exception {
+    static Coordinate getMove(Player[] players, int currentPlayerIndex, char[][] grid, int gridSize, int[] moveSums) throws Exception {
+        Player currentPlayer = players[currentPlayerIndex];
         MovingPlayer movingPlayer;
         // setup correct algorithm ready to then make move
         switch (currentPlayer.getAlgorithmName()) {
@@ -224,25 +243,45 @@ class Game {
                 throw new Exception("Unknown Algorithm: '" + currentPlayer.getAlgorithmName() + "'");
         }
         // make the move with the correct algorithm and return the chosen coordinate
-        return movingPlayer.getMove(grid, moveSums, currentPlayer.getSymbol());
+        return movingPlayer.getMove(grid, gridSize, moveSums, players, currentPlayerIndex);
     }
 
-    private Coordinate makeMove(Player currentPlayer, char[][] grid, int gridSize, int[] moveSums) throws Exception {
+    static Coordinate makeMove(Player[] players, int currentPlayerIndex, char[][] grid, int gridSize, int[] moveSums) throws Exception {
+        Player currentPlayer = players[currentPlayerIndex];
         Coordinate move;
 
         // get move coordinates from current player, do this until a legal move is chosen
         do {
-            move = getMove(currentPlayer, grid, moveSums);
+            move = getMove(players, currentPlayerIndex, grid, gridSize, moveSums);
         } while (!isLegalMove(move, grid, gridSize));
 
         // place the move on the grid
-        grid[move.getX()][move.getY()] = currentPlayer.getSymbol();
+        placeMove(move, players, currentPlayerIndex, grid, gridSize);
 
         // return coordinates of the move made
         return move;
     }
 
-    private boolean checkIfMoveWonGame(Coordinate move, char playerSymbol, int gridSize, int[] moveSums) {
+    static void placeMove(Coordinate move, Player[] players, int currentPlayerIndex, char[][] grid, int gridSize) {
+        Player currentPlayer = players[currentPlayerIndex];
+        if (isLegalMove(move, grid, gridSize)) {
+            // place the move on the grid
+            grid[move.getX()][move.getY()] = currentPlayer.getSymbol();
+        } else {
+            throw new IllegalArgumentException("Illegal Move!");
+        }
+
+    }
+
+    private static boolean checkIfMoveWonGame(Coordinate move, int gridSize, int[] moveSums) {
+        // check each of these lines to see if the absolute sum value has reached the board size
+        // if it has, then we have a winning line from the current player meaning they have got n-in a row (where n is
+        //  the board size)
+        return (Math.abs(moveSums[move.getY()]) == gridSize || Math.abs(moveSums[gridSize + move.getX()]) == gridSize ||
+                Math.abs(moveSums[2 * gridSize]) == gridSize || Math.abs(moveSums[(2 * gridSize) + 1]) == gridSize);
+    }
+
+    static void addMoveToMoveSums(Coordinate move, char playerSymbol, int gridSize, int[] moveSums) {
         int amountToAdd;
         // determine the value to add later on through the players symbol
         if (playerSymbol == 'X')
@@ -261,12 +300,6 @@ class Game {
         // if move on anti diagonal, add value to this sum
         if ((move.getX() + move.getY() + 1) == gridSize)
             moveSums[(2 * gridSize) + 1] += amountToAdd;
-
-        // check each of these lines to see if the absolute sum value has reached the board size
-        // if it has, then we have a winning line from the current player meaning they have got n-in a row (where n is
-        //  the board size)
-        return (Math.abs(moveSums[move.getY()]) == gridSize || Math.abs(moveSums[gridSize + move.getX()]) == gridSize ||
-                Math.abs(moveSums[2 * gridSize]) == gridSize || Math.abs(moveSums[(2 * gridSize) + 1]) == gridSize);
     }
 
 }

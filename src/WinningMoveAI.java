@@ -7,10 +7,11 @@
 public class WinningMoveAI implements MovingPlayer {
 
     @Override
-    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws Exception {
+        char currentPlayerSymbol = players[currentPlayerIndex].getSymbol();
         Coordinate position;
 
-        position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, player);
+        position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, currentPlayerSymbol);
 
         if (position == null) // unable to find a winning move so choose a position randomly
             position = getRandomMove(grid, gridSize);
@@ -56,10 +57,12 @@ public class WinningMoveAI implements MovingPlayer {
 
     private Coordinate getRandomMove(char[][] grid, int gridSize) {
         Coordinate position = new Coordinate();
+
         do {
             position.setX(rand.nextInt(gridSize));
             position.setY(rand.nextInt(gridSize));
         } while (grid[position.getX()][position.getY()] != 0); // if != 0 means occupied square
+
         return position;
     }
 
