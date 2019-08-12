@@ -1,15 +1,16 @@
 public class FindWinningBlockLosingAI implements MovingPlayer {
 
     @Override
-    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, char player) {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws Exception {
+        char currentPlayerSymbol = players[currentPlayerIndex].getSymbol();
         Coordinate position;
 
         // get winning move for the AI player
-        position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, player);
+        position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, currentPlayerSymbol);
 
         // if unable to find winning move, check if winning move for rival so can block
         if (position == null) {
-            if (player == 'X')
+            if (currentPlayerSymbol == 'X')
                 position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, 'O');
             else
                 position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, 'X');
