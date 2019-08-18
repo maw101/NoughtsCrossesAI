@@ -23,10 +23,10 @@ Battle simulations between each of the AI players (and even the human player) ca
 ## Optimisations
 
 ### Determining Winner in Constant Time
-By utilising an array of size (2n + 2) we are able to keep track of all the n-in-a-row lines possible for an n x n board.
+By utilising an array of size `2n + 2` we are able to keep track of all the n-in-a-row lines possible for an n x n board.
 Once one of the positions reaches a value of either n or -n, we know we have a winner.
 
-For each 'X' present on a line, we add 1 to the line in the winners array. For each 'O' present on a line, we add -1.
+For each `X` present on a line, we add 1 to the line in the winners array. For each `O` present on a line, we add -1.
 
 Once a move is made we add the value to:
 * the moves row sum;
