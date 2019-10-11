@@ -34,7 +34,7 @@ Once a move is made we add the value to:
 * and if the move is on leading diagonal, we add the value to this sum.
 
 The array is organised as follows:
-* Indices `0` to `n-1` store each of the row lines;
+* Indices `0` to `n - 1` store each of the row lines;
 * Indices `n` to `2n - 1` store each of the column lines;
 * Indices `2n` and `2n + 1` store the two diagonals.
 
