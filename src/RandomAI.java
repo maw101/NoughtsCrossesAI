@@ -1,15 +1,14 @@
 /**
  * The type Random AI.
- *
+ * <p>
  * Randomly chooses a valid move on the grid.
+ *
+ * @author maw101
  */
 public class RandomAI implements MovingPlayer {
 
-    /**
-     * Generates a random valid move on the grid.
-     */
     @Override
-    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws Exception {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws RuntimeException {
         Coordinate position = new Coordinate();
 
         do {

@@ -1,19 +1,40 @@
 import java.util.Objects;
 
+/**
+ * The type Player.
+ *
+ * @author maw101
+ */
 class Player {
 
     private final char symbol;
     private final String algorithmName;
 
+    /**
+     * Instantiates a new Player.
+     *
+     * @param symbol        the symbol
+     * @param algorithmName the algorithm name
+     */
     public Player(char symbol, String algorithmName) {
         this.symbol = symbol;
         this.algorithmName = algorithmName;
     }
 
+    /**
+     * Gets players symbol.
+     *
+     * @return the players symbol
+     */
     public char getSymbol() {
         return symbol;
     }
 
+    /**
+     * Gets algorithm name.
+     *
+     * @return the algorithm name
+     */
     public String getAlgorithmName() {
         return algorithmName;
     }

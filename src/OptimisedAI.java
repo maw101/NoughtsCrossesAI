@@ -3,10 +3,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type Optimised AI.
+ *
+ * @author maw101
+ */
 public class OptimisedAI implements MovingPlayer {
 
     @Override
-    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws Exception {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws RuntimeException {
         // copy current game to run simulations on it separately
         char[][] gridCopy;
         int[] moveSumsCopy;
@@ -21,9 +26,10 @@ public class OptimisedAI implements MovingPlayer {
         int currentMovesScore;
 
         // check that the grid is 3x3, if not then will require too much computing power so throw exception
-        if (gridSize != 3)
+        if (gridSize != 3) {
             throw new IllegalStateException("Board must be 3x3 for this AI to be able to compute a move - not enough " +
                     "computing power to compute grids larger than this");
+        }
 
         // for each valid move, run move and subsequent games scoring each of the outcomes
         for (Coordinate move : Game.getAllValidMoveCoordinates(grid, gridSize)) {
@@ -65,12 +71,13 @@ public class OptimisedAI implements MovingPlayer {
         // determine if there is a winner for the game
         char winningPlayerSymbol = Game.getWinner(moveSums, grid, gridSize);
         if (winningPlayerSymbol != Character.MIN_VALUE) { // game must be complete
-            if (winningPlayerSymbol == Character.MAX_VALUE) // game drawn
+            if (winningPlayerSymbol == Character.MAX_VALUE) { // game drawn
                 return 0; // game drawn as grid is full
-            else if (winningPlayerSymbol == playerToOptimise.getSymbol())
+            } else if (winningPlayerSymbol == playerToOptimise.getSymbol()) {
                 return 1;
-            else // opponent has won - not what we wanted
+            } else { // opponent has won - not what we wanted
                 return -1;
+            }
         }
 
         // for each valid move, run subsequent games scoring each of the outcomes
@@ -93,15 +100,17 @@ public class OptimisedAI implements MovingPlayer {
             responseScores.add(minimaxScoring(players, gridCopy, gridSize, moveSumsCopy, playerToOptimiseIndex, indexOfOpponentOfPlayerToMove));
         }
 
-        if (playerToMove.equals(playerToOptimise)) // trying to maximise score, return max of all scores
+        if (playerToMove.equals(playerToOptimise)) { // trying to maximise score, return max of all scores
             return Collections.max(responseScores);
-        else // trying to minimise score, return min of all scores
+        } else { // trying to minimise score, return min of all scores
             return Collections.min(responseScores);
+        }
     }
 
     private static char[][] deepCopyGrid(char[][] originalGrid) {
-        if (originalGrid == null)
+        if (originalGrid == null) {
             return null;
+        }
 
         final char[][] copy = new char[originalGrid.length][originalGrid.length];
         for (int i = 0; i < originalGrid.length; i++) {
@@ -112,10 +121,11 @@ public class OptimisedAI implements MovingPlayer {
     }
 
     private int getOpponentIndex(int currentPlayerIndex) {
-        if ((currentPlayerIndex == 0) || (currentPlayerIndex == 1))
+        if ((currentPlayerIndex == 0) || (currentPlayerIndex == 1)) {
             return (currentPlayerIndex + 1) % 2;
-        else
+        } else {
             throw new IllegalArgumentException("Invalid current player index specified. '" + currentPlayerIndex + "' given, should be 0 or 1.");
+        }
     }
 
 }
