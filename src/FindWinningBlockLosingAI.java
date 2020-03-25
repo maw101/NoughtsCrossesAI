@@ -43,7 +43,7 @@ public class FindWinningBlockLosingAI implements MovingPlayer {
         //  the most positions on the current winning line. rows are followed by columns
         //  which are then followed by the diagonals - this is detailed in Game.java.
         //  'X' gives a positive value in moveSums and 'O' gives a negative value in it.
-        for (int moveNum = 0; moveNum < gridSize; moveNum++) {
+        for (int moveNum = 0; moveNum < moveSums.length; moveNum++) {
             if (moveSums[moveNum] == countLookingFor) { // found a line where we are one off winning
                 if (moveNum < gridSize) { // is row
                     for (int column = 0; column < gridSize; column++) {
