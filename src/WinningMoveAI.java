@@ -1,20 +1,23 @@
 /**
  * The type Winning Move AI.
+ * <p>
+ * Chooses a winning move if one exists, otherwise randomly chooses a valid
+ * move on the grid.
  *
- * Chooses a winning move if one exists, otherwise randomly
- * chooses a valid move on the grid.
+ * @author maw101
  */
 public class WinningMoveAI implements MovingPlayer {
 
     @Override
-    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws Exception {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws RuntimeException {
         char currentPlayerSymbol = players[currentPlayerIndex].getSymbol();
         Coordinate position;
 
         position = getWinningMoveForGivenPlayer(grid, gridSize, moveSums, currentPlayerSymbol);
 
-        if (position == null) // unable to find a winning move so choose a position randomly
+        if (position == null) { // unable to find a winning move so choose a position randomly
             position = getRandomMove(grid, gridSize);
+        }
 
         return position;
     }
@@ -23,35 +26,44 @@ public class WinningMoveAI implements MovingPlayer {
         Coordinate position = null;
         int countLookingFor = grid.length - 1; // looking for a count where we are 1 off n in a row
 
-        if (player == 'O')
+        if (player == 'O') {
             countLookingFor *= -1;
+        }
 
         // try to find a line where we are 1 off n in a row
         // we utilise moveSums which is used to store the count for the player occupying
         //  the most positions on the current winning line. rows are followed by columns
         //  which are then followed by the diagonals - this is detailed in Game.java.
         //  'X' gives a positive value in moveSums and 'O' gives a negative value in it.
-        for (int moveNum = 0; moveNum < moveSums.length; moveNum++)
+        for (int moveNum = 0; moveNum < moveSums.length; moveNum++) {
             if (moveSums[moveNum] == countLookingFor) { // found a line where we are one off winning
                 if (moveNum < gridSize) { // is row
-                    for (int column = 0; column < gridSize; column++)
-                        if (grid[column][moveNum] == 0) // ie if is blank
+                    for (int column = 0; column < gridSize; column++) {
+                        if (grid[column][moveNum] == 0) { // ie if is blank
                             position = new Coordinate(column, moveNum); // place in blank square
+                        }
+                    }
                 } else if (moveNum < gridSize * 2) { // is a column
-                    for (int row = 0; row < gridSize; row++)
-                        if (grid[(moveNum - gridSize)][row] == 0) // ie if is blank
+                    for (int row = 0; row < gridSize; row++) {
+                        if (grid[(moveNum - gridSize)][row] == 0) { // ie if is blank
                             position = new Coordinate((moveNum - gridSize), row); // place in blank square
+                        }
+                    }
                 } else if (moveNum == (gridSize * 2)) { // is the leading diagonal
-                    for (int i = 0; i < gridSize; i++)
-                        if (grid[i][i] == 0) // ie if is blank
+                    for (int i = 0; i < gridSize; i++) {
+                        if (grid[i][i] == 0) { // ie if is blank
                             position = new Coordinate(i, i); // place in blank square
+                        }
+                    }
                 } else if (moveNum == ((gridSize * 2) + 1)) { // is the anti diagonal
-                    for (int row = 0, column = (gridSize - 1); row < gridSize; row++, column--)
-                        if (grid[column][row] == 0) // ie if is blank
+                    for (int row = 0, column = (gridSize - 1); row < gridSize; row++, column--) {
+                        if (grid[column][row] == 0) { // ie if is blank
                             position = new Coordinate(column, row); // place in blank square
+                        }
+                    }
                 }
             }
-
+        }
         return position;
     }
 

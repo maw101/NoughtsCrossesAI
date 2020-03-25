@@ -2,6 +2,8 @@ import java.util.Objects;
 
 /**
  * The type Coordinate.
+ *
+ * @author maw101
  */
 class Coordinate {
 

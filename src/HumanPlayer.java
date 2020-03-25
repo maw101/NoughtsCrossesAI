@@ -1,9 +1,14 @@
 import java.util.Scanner;
 
+/**
+ * The type Human player.
+ *
+ * @author maw101
+ */
 public class HumanPlayer implements MovingPlayer {
 
     @Override
-    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws Exception {
+    public Coordinate getMove(char[][] grid, int gridSize, int[] moveSums, Player[] players, int currentPlayerIndex) throws RuntimeException {
         // no checks required to see if it is valid as this is checked in Game class' makeMove method
         return getCoordinateInput();
     }

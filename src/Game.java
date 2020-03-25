@@ -2,11 +2,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The type Game.
+ *
+ * @author maw101
+ */
 class Game {
 
+    /**
+     * Instantiates a new Game.
+     */
     public Game() {}
 
-    public void play(String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
+    /**
+     * Plays the game.
+     *
+     * @param playerOneAlgorithmName the player one algorithm name
+     * @param playerTwoAlgorithmName the player two algorithm name
+     *
+     * @throws RuntimeException if invalid player algorithm name
+     */
+    public void play(String playerOneAlgorithmName, String playerTwoAlgorithmName) throws RuntimeException {
         // setup grid
         final int gridSize = 3;
         char[][] grid = getNewGrid(gridSize); // setup a new blank grid
@@ -14,8 +30,8 @@ class Game {
         // setup moveSums which allows us to determine a winner efficiently
         int[] moveSums = new int[(gridSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
 
-        // set gameWon boolean
-        boolean gameWon = false;
+        // define gameWon boolean
+        boolean gameWon;
 
         // define variables for a move
         Coordinate move;
@@ -32,8 +48,9 @@ class Game {
         int turnCount = 0;
 
         // output player information - symbol and algorithm name for each player
-        for (Player player : players)
+        for (Player player : players) {
             System.out.println(player);
+        }
         System.out.println("############################################################");
 
         do {
@@ -78,11 +95,22 @@ class Game {
 
     // ######## BATTLING AI METHODS ########
 
-    public void runBattles(int numberOfBattles, String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
+    /**
+     * Run battles.
+     *
+     * @param numberOfBattles        the number of battles
+     * @param playerOneAlgorithmName the player one algorithm name
+     * @param playerTwoAlgorithmName the player two algorithm name
+     */
+    public void runBattles(int numberOfBattles, String playerOneAlgorithmName, String playerTwoAlgorithmName) {
         int pOneWinCount = 0;
         int pTwoWinCount = 0;
         int drawCount = 0;
+        System.out.println(playerOneAlgorithmName + " vs. " + playerTwoAlgorithmName);
         for (int i = 0; i < numberOfBattles; i++) {
+            if (i % 50 == 0) {
+                System.out.print("Battle #" + i + " Running... ");
+            }
             switch (runSingleBattle(playerOneAlgorithmName, playerTwoAlgorithmName)) {
                 case 0: // x won
                     pOneWinCount++;
@@ -95,13 +123,14 @@ class Game {
                     break;
             }
         }
-        System.out.println(numberOfBattles + " Battles");
+        System.out.println();
+        System.out.println(numberOfBattles + " Battles Completed");
         System.out.println("Player One (" + playerOneAlgorithmName + ") Wins: " + pOneWinCount + " (~" + (int) (((double) pOneWinCount / numberOfBattles) * 100) + "%)");
         System.out.println("Player Two (" + playerTwoAlgorithmName + ") Wins: " + pTwoWinCount + " (~" + (int) (((double) pTwoWinCount / numberOfBattles) * 100) + "%)");
         System.out.println("Draw Count: " + drawCount + " (~" + (int) (((double) drawCount / numberOfBattles) * 100) + "%)");
     }
 
-    private int runSingleBattle(String playerOneAlgorithmName, String playerTwoAlgorithmName) throws Exception {
+    private int runSingleBattle(String playerOneAlgorithmName, String playerTwoAlgorithmName) {
         Random rand = new Random();
         // setup grid
         final int gridSize = 3;
@@ -110,8 +139,8 @@ class Game {
         // setup moveSums which allows us to determine a winner efficiently
         int[] moveSums = new int[(gridSize * 2) + 2]; // n positions for rows, n for columns then 2 for the diagonals
 
-        // set gameWon boolean
-        boolean gameWon = false;
+        // define gameWon boolean
+        boolean gameWon;
 
         // define variables for a move
         Coordinate move;
@@ -154,59 +183,107 @@ class Game {
 
     // ######## /END BATTLING AI METHODS ########
 
+    /**
+     * Get all valid move coordinates coordinate [ ].
+     *
+     * @param grid     the grid
+     * @param gridSize the grid size
+     * @return the coordinate [ ]
+     */
     static Coordinate[] getAllValidMoveCoordinates(char[][] grid, int gridSize) {
         List<Coordinate> validMoves = new ArrayList<>();
+
         for (int row = 0; row < gridSize; row++) {
             for (int col = 0; col < gridSize; col++) {
-                if (grid[col][row] == '\0') // check if position empty
+                if (grid[col][row] == '\0') { // check if position empty
                     validMoves.add(new Coordinate(col, row));
+                }
             }
         }
-        return validMoves.toArray(new Coordinate[validMoves.size()]); // convert ArrayList to an Array of Coordinates
+
+        return validMoves.toArray(new Coordinate[0]); // convert ArrayList to an Array of Coordinates
     }
 
+    /**
+     * Gets winner.
+     *
+     * @param moveSums the move sums
+     * @param grid     the grid
+     * @param gridSize the grid size
+     * @return the winner
+     */
     static char getWinner(int[] moveSums, char[][] grid, int gridSize) {
         // loop through the moveSums array which allows us to determine lines that have won
         for (int lineSum : moveSums) {
-            if (lineSum == gridSize) // if lines sum is equal to the board size, x has won
+            if (lineSum == gridSize) { // if lines sum is equal to the board size, x has won
                 return 'X';
-            else if (lineSum == -gridSize) // otherwise if the lines sum is equal to -(board size), o has won
+            } else if (lineSum == -gridSize) { // otherwise if the lines sum is equal to -(board size), o has won
                 return 'O';
+            }
         }
-        if (isGridFull(grid, gridSize))
+
+        if (isGridFull(grid, gridSize)) {
             return Character.MAX_VALUE; // game drawn
+        }
+
         return Character.MIN_VALUE; // no winner as yet - return null char literal
     }
 
+    /**
+     * Is grid full boolean.
+     *
+     * @param grid     the grid
+     * @param gridSize the grid size
+     * @return the boolean
+     */
     static boolean isGridFull(char[][] grid, int gridSize) {
-        for (int row = 0; row < gridSize; row++)
-            for (int col = 0; col < gridSize; col++)
-                if (grid[col][row] == '\0') // if == 0 means empty square
+        for (int row = 0; row < gridSize; row++) {
+            for (int col = 0; col < gridSize; col++) {
+                if (grid[col][row] == '\0') { // if == 0 means empty square
                     return false;
+                }
+            }
+        }
         return true;
     }
 
-     static void renderGrid(char[][] grid, int gridSize) { // todo: make private again
+    /**
+     * Render grid.
+     *
+     * @param grid     the grid
+     * @param gridSize the grid size
+     */
+    static void renderGrid(char[][] grid, int gridSize) { // todo: make private again
         System.out.println("  0 1 2");
         System.out.println("  -----");
         for (int row = 0; row < gridSize; row++) {
             System.out.print(row + "|");
             for (int col = 0; col < gridSize; col++) {
-                if (grid[col][row] == '\0')
+                if (grid[col][row] == '\0') {
                     System.out.print("  ");
-                else
+                } else {
                     System.out.print(grid[col][row] + " ");
+                }
             }
             System.out.println();
         }
         System.out.println();
     }
 
+    /**
+     * Is legal move boolean.
+     *
+     * @param move     the move
+     * @param grid     the grid
+     * @param gridSize the grid size
+     * @return the boolean
+     */
     static boolean isLegalMove(Coordinate move, char[][] grid, int gridSize) {
         // check if move is null
-        if (move == null) // means a class implementing the 'MovingPlayer' interface has been incorrectly implemented
+        if (move == null) { // means a class implementing the 'MovingPlayer' interface has been incorrectly implemented
             throw new NullPointerException("Move is null - the current players algorithm has been incorrectly " +
                     "implemented as it has failed to return a move");
+        }
         // check if move is inside the grid
         if ((move.getX() < 0 || move.getX() >= gridSize) ||
                 (move.getY() < 0 || move.getY() >= gridSize)) {
@@ -219,9 +296,22 @@ class Game {
         return true;
     }
 
-    static Coordinate getMove(Player[] players, int currentPlayerIndex, char[][] grid, int gridSize, int[] moveSums) throws Exception {
+    /**
+     * Gets move.
+     *
+     * @param players            the players
+     * @param currentPlayerIndex the current player index
+     * @param grid               the grid
+     * @param gridSize           the grid size
+     * @param moveSums           the move sums
+     * @return the move
+     *
+     * @throws RuntimeException if invalid player algorithm name
+     */
+    static Coordinate getMove(Player[] players, int currentPlayerIndex, char[][] grid, int gridSize, int[] moveSums) throws RuntimeException {
         Player currentPlayer = players[currentPlayerIndex];
         MovingPlayer movingPlayer;
+
         // setup correct algorithm ready to then make move
         switch (currentPlayer.getAlgorithmName()) {
             case "Human":
@@ -240,14 +330,25 @@ class Game {
                 movingPlayer = new OptimisedAI();
                 break;
             default:
-                throw new Exception("Unknown Algorithm: '" + currentPlayer.getAlgorithmName() + "'");
+                throw new RuntimeException("Unknown Algorithm: '" + currentPlayer.getAlgorithmName() + "'");
         }
         // make the move with the correct algorithm and return the chosen coordinate
         return movingPlayer.getMove(grid, gridSize, moveSums, players, currentPlayerIndex);
     }
 
-    static Coordinate makeMove(Player[] players, int currentPlayerIndex, char[][] grid, int gridSize, int[] moveSums) throws Exception {
-        Player currentPlayer = players[currentPlayerIndex];
+    /**
+     * Make move coordinate.
+     *
+     * @param players            the players
+     * @param currentPlayerIndex the current player index
+     * @param grid               the grid
+     * @param gridSize           the grid size
+     * @param moveSums           the move sums
+     * @return the coordinate
+     *
+     * @throws RuntimeException if invalid player algorithm name
+     */
+    static Coordinate makeMove(Player[] players, int currentPlayerIndex, char[][] grid, int gridSize, int[] moveSums) throws RuntimeException {
         Coordinate move;
 
         // get move coordinates from current player, do this until a legal move is chosen
@@ -262,15 +363,24 @@ class Game {
         return move;
     }
 
+    /**
+     * Place move.
+     *
+     * @param move               the move
+     * @param players            the players
+     * @param currentPlayerIndex the current player index
+     * @param grid               the grid
+     * @param gridSize           the grid size
+     */
     static void placeMove(Coordinate move, Player[] players, int currentPlayerIndex, char[][] grid, int gridSize) {
         Player currentPlayer = players[currentPlayerIndex];
+
         if (isLegalMove(move, grid, gridSize)) {
             // place the move on the grid
             grid[move.getX()][move.getY()] = currentPlayer.getSymbol();
         } else {
             throw new IllegalArgumentException("Illegal Move!");
         }
-
     }
 
     private static boolean checkIfMoveWonGame(Coordinate move, int gridSize, int[] moveSums) {
@@ -281,13 +391,22 @@ class Game {
                 Math.abs(moveSums[2 * gridSize]) == gridSize || Math.abs(moveSums[(2 * gridSize) + 1]) == gridSize);
     }
 
+    /**
+     * Add move to move sums.
+     *
+     * @param move         the move
+     * @param playerSymbol the player symbol
+     * @param gridSize     the grid size
+     * @param moveSums     the move sums
+     */
     static void addMoveToMoveSums(Coordinate move, char playerSymbol, int gridSize, int[] moveSums) {
         int amountToAdd;
         // determine the value to add later on through the players symbol
-        if (playerSymbol == 'X')
+        if (playerSymbol == 'X') {
             amountToAdd = 1;
-        else
+        } else {
             amountToAdd = -1;
+        }
 
         // add value to the moves row sum
         moveSums[move.getY()] += amountToAdd;
@@ -295,11 +414,13 @@ class Game {
         moveSums[gridSize + move.getX()] += amountToAdd;
 
         // if move is on leading diagonal, add value to this sum
-        if (move.getX() == move.getY())
+        if (move.getX() == move.getY()) {
             moveSums[2 * gridSize] += amountToAdd;
+        }
         // if move on anti diagonal, add value to this sum
-        if ((move.getX() + move.getY() + 1) == gridSize)
+        if ((move.getX() + move.getY() + 1) == gridSize) {
             moveSums[(2 * gridSize) + 1] += amountToAdd;
+        }
     }
 
 }

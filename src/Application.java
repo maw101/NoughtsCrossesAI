@@ -1,9 +1,22 @@
+/**
+ * The type Application.
+ *
+ * @author maw101
+ */
 class Application {
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws RuntimeException if invalid player algorithm name
+     */
     public static void main(String[] args) throws Exception {
         Game g = new Game();
-        //g.runBattles(1000, "FindWinningBlockLosingAI", "OptimisedAI");
-        g.play(args[0], args[1]);
+        g.runBattles(500, "FindWinningBlockLosingAI", "OptimisedAI");
+
+        //g.runBattles(1000, "RandomAI", "OptimisedAI");
+        //g.play(args[0], args[1]);
     }
 
 }
