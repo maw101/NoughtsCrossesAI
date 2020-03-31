@@ -7,7 +7,7 @@ import java.util.Random;
  *
  * @author maw101
  */
-class Game {
+public class Game {
 
     /**
      * Instantiates a new Game.

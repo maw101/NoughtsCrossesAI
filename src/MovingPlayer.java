@@ -5,7 +5,7 @@ import java.util.Random;
  *
  * @author maw101
  */
-interface MovingPlayer {
+public interface MovingPlayer {
 
     /**
      * The constant rand.

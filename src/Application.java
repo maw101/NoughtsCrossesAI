@@ -3,7 +3,7 @@
  *
  * @author maw101
  */
-class Application {
+public class Application {
 
     /**
      * The entry point of application.
@@ -13,10 +13,11 @@ class Application {
      */
     public static void main(String[] args) throws Exception {
         Game g = new Game();
-        g.runBattles(500, "FindWinningBlockLosingAI", "OptimisedAI");
+        //g.runBattles(500, "FindWinningBlockLosingAI", "OptimisedAI");
 
-        //g.runBattles(1000, "RandomAI", "OptimisedAI");
-        //g.play(args[0], args[1]);
+        g.play("Human", "RandomAI");
+
+        g.runBattles(10, "RandomAI", "OptimisedAI");
     }
 
 }
