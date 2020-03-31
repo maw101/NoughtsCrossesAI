@@ -1,3 +1,5 @@
+package noughtsandcrosses.game;
+
 import java.util.Objects;
 
 /**
@@ -5,7 +7,7 @@ import java.util.Objects;
  *
  * @author maw101
  */
-class Coordinate {
+public class Coordinate {
 
     private int x;
     private int y;

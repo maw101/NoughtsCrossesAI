@@ -1,3 +1,5 @@
+package noughtsandcrosses.players;
+
 import java.util.Objects;
 
 /**
@@ -5,7 +7,7 @@ import java.util.Objects;
  *
  * @author maw101
  */
-class Player {
+public class Player {
 
     private final char symbol;
     private final String algorithmName;

@@ -1,3 +1,10 @@
+package noughtsandcrosses.players.ai;
+
+import noughtsandcrosses.game.Coordinate;
+import noughtsandcrosses.game.Game;
+import noughtsandcrosses.players.MovingPlayer;
+import noughtsandcrosses.players.Player;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
