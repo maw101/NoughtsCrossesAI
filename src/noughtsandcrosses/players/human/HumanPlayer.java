@@ -1,3 +1,9 @@
+package noughtsandcrosses.players.human;
+
+import noughtsandcrosses.game.Coordinate;
+import noughtsandcrosses.players.MovingPlayer;
+import noughtsandcrosses.players.Player;
+
 import java.util.Scanner;
 
 /**

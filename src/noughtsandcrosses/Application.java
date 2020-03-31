@@ -1,3 +1,7 @@
+package noughtsandcrosses;
+
+import noughtsandcrosses.game.Game;
+
 /**
  * The type Application.
  *

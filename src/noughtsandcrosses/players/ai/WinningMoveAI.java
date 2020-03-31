@@ -1,3 +1,9 @@
+package noughtsandcrosses.players.ai;
+
+import noughtsandcrosses.game.Coordinate;
+import noughtsandcrosses.players.MovingPlayer;
+import noughtsandcrosses.players.Player;
+
 /**
  * The type Winning Move AI.
  * <p>

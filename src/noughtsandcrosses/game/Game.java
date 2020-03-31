@@ -1,3 +1,12 @@
+package noughtsandcrosses.game;
+
+import noughtsandcrosses.players.*;
+import noughtsandcrosses.players.ai.FindWinningBlockLosingAI;
+import noughtsandcrosses.players.ai.OptimisedAI;
+import noughtsandcrosses.players.ai.RandomAI;
+import noughtsandcrosses.players.ai.WinningMoveAI;
+import noughtsandcrosses.players.human.HumanPlayer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -190,7 +199,7 @@ public class Game {
      * @param gridSize the grid size
      * @return the coordinate [ ]
      */
-    static Coordinate[] getAllValidMoveCoordinates(char[][] grid, int gridSize) {
+    public static Coordinate[] getAllValidMoveCoordinates(char[][] grid, int gridSize) {
         List<Coordinate> validMoves = new ArrayList<>();
 
         for (int row = 0; row < gridSize; row++) {
@@ -212,7 +221,7 @@ public class Game {
      * @param gridSize the grid size
      * @return the winner
      */
-    static char getWinner(int[] moveSums, char[][] grid, int gridSize) {
+    public static char getWinner(int[] moveSums, char[][] grid, int gridSize) {
         // loop through the moveSums array which allows us to determine lines that have won
         for (int lineSum : moveSums) {
             if (lineSum == gridSize) { // if lines sum is equal to the board size, x has won
@@ -372,7 +381,7 @@ public class Game {
      * @param grid               the grid
      * @param gridSize           the grid size
      */
-    static void placeMove(Coordinate move, Player[] players, int currentPlayerIndex, char[][] grid, int gridSize) {
+    public static void placeMove(Coordinate move, Player[] players, int currentPlayerIndex, char[][] grid, int gridSize) {
         Player currentPlayer = players[currentPlayerIndex];
 
         if (isLegalMove(move, grid, gridSize)) {
@@ -399,7 +408,7 @@ public class Game {
      * @param gridSize     the grid size
      * @param moveSums     the move sums
      */
-    static void addMoveToMoveSums(Coordinate move, char playerSymbol, int gridSize, int[] moveSums) {
+    public static void addMoveToMoveSums(Coordinate move, char playerSymbol, int gridSize, int[] moveSums) {
         int amountToAdd;
         // determine the value to add later on through the players symbol
         if (playerSymbol == 'X') {

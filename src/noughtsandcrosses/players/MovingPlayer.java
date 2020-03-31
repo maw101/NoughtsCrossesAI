@@ -1,3 +1,7 @@
+package noughtsandcrosses.players;
+
+import noughtsandcrosses.game.Coordinate;
+
 import java.util.Random;
 
 /**

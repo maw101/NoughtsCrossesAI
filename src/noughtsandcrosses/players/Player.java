@@ -1,3 +1,5 @@
+package noughtsandcrosses.players;
+
 import java.util.Objects;
 
 /**
